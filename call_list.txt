@@ -1,0 +1,37 @@
+CREATE DATABASE call_list
+
+CREATE TABLE users (
+id SERIAL PRIMARY KEY,
+first_name VARCHAR(50),
+email VARCHAR(50)
+);
+
+INSERT INTO users (first_name, email) VALUES ('carlos', 'carlos@gmail.cl');
+
+INSERT INTO users (first_name, email) VALUES ('laura', 'laura@gmail.cl');
+
+CREATE TABLE calls (
+id SERIAL PRIMARY KEY,
+phone INTEGER,
+date DATE,
+user_id INTEGER REFERENCES users (id)
+);
+
+ALTER TABLE users ADD COLUMN last_name VARCHAR(50);
+
+UPDATE users SET last_name = ‘Herrera’ WHERE first_name = ‘carlos';
+
+UPDATE users SET last_name = ‘Simpson’ WHERE first_name = ‘laura';
+
+ INSERT INTO calls (phone, date, user_id) VALUES (12345, ‘2018-02-05’, 2 ); 
+
+INSERT INTO users (first_name, email, last_name) VALUES ('Roberto', 'Roberto@gmail.cl', ‘Jofre’);
+
+SELECT first_name, COUNT(phone) FROM users LEFT JOIN calls ON (users.id = calls.user_id) GROUP BY first_name;
+
+SELECT * FROM calls LEFT JOIN users ON (users.id = calls.user_id) WHERE first_name = ‘carlos’  ORDER BY date DESC
+
+CREATE TABLE audit (
+reason VARCHAR (200),
+user_id INTEGER REFERENCES users (id)
+);
